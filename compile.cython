@@ -1,0 +1,8 @@
+#uses Cython
+#run from a project directory
+from distutils.core import setup
+from Cython.Build import cythonize
+
+setup(
+	ext_modules = cythonize("*.py")
+)
