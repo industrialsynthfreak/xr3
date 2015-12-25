@@ -25,7 +25,7 @@ def console_output(data, show='FULL'):
 	s_line = data_loc['CON_E_LINE_OUT']
 	PLOT_DATA = []
 	for det_name, ntotal, source_data in data:
-		xval, yval = [], []
+		xval, yval, ycval = [], [], []
 		sources_yc = 0
 		G = source_data[0][5][0][4]
 		if show!='NONE':
@@ -43,10 +43,11 @@ def console_output(data, show='FULL'):
 										Nph, Eph * 100.))
 				xval.append(e)
 				yval.append(Nph)
+				ycval.append(N-Nph)
 			if show!='NONE':
 				print('\n')
 			sources_yc += (N - Nph)
-		PLOT_DATA.append( ( det_name, xval, yval, sources_yc ) )	
+		PLOT_DATA.append( ( det_name, xval, yval, ycval, sources_yc ) )	
 	return PLOT_DATA
 
 def console(*args):

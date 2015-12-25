@@ -5,7 +5,7 @@ import tkinter as tk
 from tkinter import filedialog as tkFileDialog
 
 try:
-	from numpy import random
+	from numpy import random, zeros, ones
 	import matplotlib
 	matplotlib.use("TkAgg")
 	from matplotlib import pyplot as plt
@@ -462,20 +462,21 @@ class Interface:
 		def __plot_single(xy_data, N_YC, DX, CHANNELS, 
 							DISCR, G_FACTOR, E_RES_REF, E_REF):
 
-			def __compton_scattering():
-				comptons = [ 1 / i for i in range(1,len(YR)+1) ]
+			def __compton_scattering(X, YC):
+				i = int( X / DX )
+				comptons = ones(i, float) / range(1, i+1)
 				c_sum = sum(comptons)
-				comptons = [ c / c_sum for c in comptons ]
+				comptons = comptons / c_sum
 				for i, c in enumerate(comptons):
 					if i * DX > DISCR:
-						dy = int(c * N_YC)
-						YR[i] += dy
+						dy = int(c * YC)
 						if dy==0:
 							break
+						YR[i] += dy
 
 			def __gauss_plot(X, Y):
 				E_RES = E_RES_REF * ( E_REF / X )**0.5
-				val = list( random.normal(X, E_RES, G_FACTOR ) )
+				val = random.normal(X, E_RES, G_FACTOR )
 				dy = Y // G_FACTOR
 				for vv in val:
 					if vv > DISCR:
@@ -493,14 +494,14 @@ class Interface:
 					else:
 						YR[-1] += Y
 			
-			YR = [0] * channels
-			__compton_scattering()
-			for X, Y in xy_data:
+			YR = zeros(channels, int)
+			for X, Y, YC in xy_data:
 				if G_FACTOR > 1 and E_RES_REF and Y > 3:
 					__gauss_plot(X, Y)
 				else:
 					__delta_plot(X, Y)
-			return YR
+				__compton_scattering(X, YC)
+			return tuple(YR)
 
 		if not self.plot_enable:
 			return None
@@ -509,8 +510,8 @@ class Interface:
 		dx = rng / channels
 		gauss_factor = channels // self.plot_gauss_f
 		for v in plot_data:
-			name, xval, yval, n_yc = v
-			values = __plot_single( zip(xval, yval), n_yc, dx, channels, 
+			name, xval, yval, ycval, n_yc = v
+			values = __plot_single( zip(xval, yval, ycval), n_yc, dx, channels, 
 									discr, gauss_factor, e_res_ref, E_ref)
 			__draw_single( name, channels, discr, rng, values )
 		self.gflags.BUF_PLOT_DATA = None
