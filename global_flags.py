@@ -8,8 +8,6 @@ class GlobalFlags:
 		self.FLG_SIMULATE = False
 		self.FLG_TKINTER =\
 		 bool(self.LOADER.parser['INTERFACE'].get('tkinter', True))
-		self.FLG_CONSOLE_OUTPUT_TYPE =\
-		 self.LOADER.parser['INTERFACE'].get('console_output_type', 'FULL')
 		self.reload_buffer()
 
 	def reload_buffer(self):
