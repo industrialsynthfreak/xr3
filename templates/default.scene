@@ -1,4 +1,4 @@
 
 [SOURCE]0_Cs137_0.1MBk_Al_0.1cm_pos0.0m	Cs137	None	0.1	Al	0.0	100000.0	
-[SOURCE]1_Background_1.0ng)_Al_0.1cm_pos0.0m	Background	1e-09	0.1	Al	0.0	None	
+[SOURCE]1_Background_1.0ng)_Al_0.1cm_pos0.0m	*Background	1e-09	0.1	Al	0.0	None	
 [DETECTOR]0_CsI_100.0cm2x1.0cm_Al_0.1cm_pos1.0m	100.0	100.0	1.0	CsI	0.1	Al	
