@@ -84,7 +84,7 @@ class Interface:
 		filemenu = tk.Menu(menubar, tearoff=0)
 		filemenu.add_command(label="Open", command=self.c_action_load)
 		filemenu.add_command(label="Save", command=self.c_action_save)
-		filemenu.add_command(label="Exit", command=None)
+		filemenu.add_command(label="Exit", command=self.c_action_exit)
 		menubar.add_cascade(label='File', menu=filemenu)
 
 		optmenu = tk.Menu(menubar, tearoff=0)
@@ -251,6 +251,16 @@ class Interface:
 				pos[2] / self.w_v_detector_x_pos_scale)
 			self.w_list_detectors.insert(cursor, s[0])
 			cursor += 1
+
+	def c_action_enable_disable_plots(self):
+		if self.plot_enable:
+			self.plot_enable = False
+		else:
+			if PLOT_ENABLE:
+				self.plot_enable = True
+
+	def c_action_exit(self):
+		self.root.destroy()
 
 	def __find(self, db, name):
 		for i, d in enumerate(db):
