@@ -13,7 +13,8 @@ try:
 	from matplotlib.backends.backend_tkagg import NavigationToolbar2TkAgg
 	from matplotlib.figure import Figure
 	PLOT_ENABLE = True
-except Exception:
+except Exception as Err:
+	print(Err)
 	PLOT_ENABLE = False
 
 class Interface:
