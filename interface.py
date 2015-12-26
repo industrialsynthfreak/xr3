@@ -27,7 +27,7 @@ class Interface:
 		self.data_loc = self.gflags.LOADER.parser['LOC']
 		self.data_int = self.gflags.LOADER.parser['INTERFACE']
 		self.template = os.path.join( os.path.dirname( __file__ ), 
-			self.gflags.LOADER.parser['PATHS']['default_template'] )
+			gflags.LOADER.parser['PATHS']['default_template'] )
 		self.activity_det_types = [ self.data_loc['INT_STR_MASS'], 
 									self.data_loc['INT_STR_ACTIVITY'] ]
 		self.w = int( self.data_int.get('width', 1000) )

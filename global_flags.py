@@ -2,13 +2,12 @@ from loader import Loader
 
 class GlobalFlags:
 	def __init__(self):
+		self.reload_buffer()
 		self.LOADER = Loader()
 		self.DATA = self.LOADER.data
 		self.FLG_RUN = True
 		self.FLG_SIMULATE = False
-		self.FLG_TKINTER =\
-		 bool(self.LOADER.parser['INTERFACE'].get('tkinter', True))
-		self.reload_buffer()
+		self.FLG_TKINTER = bool(self.LOADER.parser['INTERFACE']['tkinter'])
 
 	def reload_buffer(self):
 		self.BUF_MEDIUM_TYPE = None

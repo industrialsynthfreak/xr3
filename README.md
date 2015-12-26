@@ -92,10 +92,10 @@ Press simulate.
 - xr3.py — main module
 - config.ini — program preferences
 - /templates/ - list of saved source/detector configurations (scenes) including default scene
-- /media/ - scene media data (air, water, etc.)
-- /materials/ - moderators, cases
-- /scintillators/	 
-— /isotopes/	 
+- /media/ - air/water attenuation tables
+- /materials/ - attenuation tables for common moderators
+- /scintillators/ — scintillator materials, attenuation and absorption tables
+— /isotopes/ — folder with isotopic spectra
 - /docs/ - additional documentation
 
 ## Adding data
