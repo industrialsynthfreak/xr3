@@ -7,7 +7,7 @@ It was designed for educational purposes only.
 
 ## Physics
 
-The program uses simple exponential attenuation formulae and tables of attenuation coefficients to determine x-ray absorption and detector efficiency values. No Monte-Carlo methods or obscure nuclear processes are taken into account.
+The program uses simple exponential attenuation formulae and tables of attenuation coefficients to determine x-ray absorption and detector efficiency values. No Monte-Carlo methods or obscure nuclear processes were taken into account.
 
 ## Requirements
 
@@ -20,13 +20,13 @@ Because it uses tkinter for the GUI, it's likely to run on any Mac, Windows or L
 
 ## How to use
 
-- Run the main script:
+Run the main script:
 
 	python3 xr3.py
 
-- Default template will be automatically loaded from templates/default.scene file. You can overwrite this file or change 'default_template' value in config.ini to a custom path
-- Set parameters you want. If you'd like to edit a particular detector/source, first adjust values, then select item in the list and press 'Rewrite'
-- Press simulate
+Default template will be automatically loaded from templates/default.scene file. You can overwrite this file or change 'default_template' value in config.ini to a custom path.
+Set parameters you want. If you'd like to edit a particular detector/source, first adjust values, then select item in the list and press 'Rewrite'.
+Press simulate.
 
 ### Source options
 
@@ -43,35 +43,35 @@ Because it uses tkinter for the GUI, it's likely to run on any Mac, Windows or L
 - Absolute position (1D)
 - Casing/moderator type
 - Casing/moderator thickness
-- Thickness of the scintillator
+- Scintillator thickness
 
 ### Experiment options
 
 - Exposition time
 - Number of ADC channels
 - Detector energy resolution (sadly you should set it by yourself)
-- ADC CFD threshold
-- ADC max energy/ max signal
+- ADC CFD threshold in MeV
+- ADC max energy/ max signal in MeV
 
 ### What you can get
 
-- Console data about isotope x-ray lines (events, efficiency, absorption values, etc.). If you just want some basic info about detector efficiency, in config.ini set 'console_output_type' to PARTIAL
+- Console data about all energy lines (events, efficiency, absorption values, etc.). If you just want some basic info about detector efficiency, in config.ini set 'console_output_type' to PARTIAL
 - Modelled spectra (if matplotlib/numpy installed)
-- Save detectors/isotope compositions and share them with your friends (just joking, don't do that, I'm serious)
+- Save detectors/isotope compositions and share them with your friends ( just joking, don't do that, I'm serious)
 
 ## Issues
 
-- Possibly it won't work properly in very close source-detector relative positioning.
+- Possibly it won't work properly at a very close source-detector relative positioning.
 - No other radiation (excl x-ray/gamma)
 - Linear interpolation of mass attenuation / photoabsorption coefficients
 - Point isotropic sources only
-- All detectors are simulated as cylinders oriented to a source
+- All detectors are source-oriented cylinders
 - Technically only 1D scene configuration
-- Very simple Compton-effect simulation
+- Faked Compton-effect simulation
 - No pair production yet
-- No simultaneous detection events and no temporal resolution
-- No inner radioactivity
-- Background simulation is stupid
+- No simultaneous detection events or temporal resolution
+- No inner radioactivity (for LaBr3 for example)
+- Background simulation is still kinda stupid
 
 ## ToDo list
 
@@ -94,8 +94,8 @@ Because it uses tkinter for the GUI, it's likely to run on any Mac, Windows or L
 - /templates/ - list of saved source/detector configurations (scenes) including default scene
 - /media/ - scene media data (air, water, etc.)
 - /materials/ - moderators, cases
-- /scintillators/
-— /isotopes/
+- /scintillators/	 
+— /isotopes/	 
 - /docs/ - additional documentation
 
 ## Adding data
