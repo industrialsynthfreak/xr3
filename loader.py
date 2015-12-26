@@ -2,7 +2,7 @@ import os
 from functools import partial
 import configparser
 
-from nist import parse_isotope_file, parse_material_file, parse_save_file
+from nist import *
 from mycls import Data
 
 class Loader:

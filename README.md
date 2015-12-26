@@ -2,7 +2,7 @@
 
 ## About
 
-xr3 (x-ray 3) is a tool for x-ray scintillator detector/detector array modelling.
+xr3 (x-ray 3) is a tool for modelling scintillator x-ray detector or detector array characteristics.
 It was designed for educational purposes only.
 
 ## Physics
@@ -16,7 +16,7 @@ The program uses simple exponential attenuation formulae and tables of attenuati
 
 ## Platform support
 
-Because it uses tkinter for the GUI, it's likely to run on any Mac, Windows and Linux computer. Tested on OSX 10.10.
+Because it uses tkinter for the GUI, it's likely to run on any Mac, Windows or Linux computer. Tested on OSX 10.10. It can be compiled using cython (except interface.py module, I guess).
 
 ## How to use
 
@@ -24,6 +24,7 @@ Because it uses tkinter for the GUI, it's likely to run on any Mac, Windows and 
 
 	python3 xr3.py
 
+- Default template will be automatically loaded from templates/default.scene file. You can overwrite this file or change 'default_template' value in config.ini to a custom path
 - Set parameters you want. If you'd like to edit a particular detector/source, first adjust values, then select item in the list and press 'Rewrite'
 - Press simulate
 
@@ -60,7 +61,8 @@ Because it uses tkinter for the GUI, it's likely to run on any Mac, Windows and 
 
 ## Issues
 
-- Possibly it won't work properly in very close source-detector relative positioning
+- Possibly it won't work properly in very close source-detector relative positioning.
+- No other radiation (excl x-ray/gamma)
 - Linear interpolation of mass attenuation / photoabsorption coefficients
 - Point isotropic sources only
 - All detectors are simulated as cylinders oriented to a source
