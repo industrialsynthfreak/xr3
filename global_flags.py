@@ -7,7 +7,7 @@ class GlobalFlags:
 		self.DATA = self.LOADER.data
 		self.FLG_RUN = True
 		self.FLG_SIMULATE = False
-		self.FLG_TKINTER = bool(self.LOADER.parser['INTERFACE']['tkinter'])
+		self.FLG_TKINTER = bool(int(self.LOADER.parser['INTERFACE']['tkinter']))
 
 	def reload_buffer(self):
 		self.BUF_MEDIUM_TYPE = None
