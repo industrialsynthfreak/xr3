@@ -26,8 +26,13 @@ class Interface:
 		self.data = self.gflags.DATA
 		self.data_loc = self.gflags.LOADER.parser['LOC']
 		self.data_int = self.gflags.LOADER.parser['INTERFACE']
-		self.template = os.path.join( os.path.dirname( __file__ ), 
-			gflags.LOADER.parser['PATHS']['default_template'] )
+		self.template = gflags.LOADER.parser['PATHS']['default_template']
+		if self.template.lower()=='none': 
+			self.template = None
+		else:
+			self.template = os.path.join( os.path.dirname( __file__ ), 
+				self.template )
+
 		self.activity_det_types = [ self.data_loc['INT_STR_MASS'], 
 									self.data_loc['INT_STR_ACTIVITY'] ]
 		self.w = int( self.data_int.get('width', 1000) )
@@ -82,16 +87,24 @@ class Interface:
 		menubar = tk.Menu(self.root)
 
 		filemenu = tk.Menu(menubar, tearoff=0)
-		filemenu.add_command(label="Open", command=self.c_action_load)
-		filemenu.add_command(label="Save", command=self.c_action_save)
-		filemenu.add_command(label="Exit", command=self.c_action_exit)
-		menubar.add_cascade(label='File', menu=filemenu)
+		filemenu.add_command(label=self.data_loc['INT_MENU_OPEN'], 
+			command=self.c_action_load)
+		filemenu.add_command(label=self.data_loc['INT_MENU_SAVE'], 
+			command=self.c_action_save)
+		filemenu.add_command(label=self.data_loc['INT_MENU_EXIT'], 
+			command=self.c_action_exit)
+		menubar.add_cascade(label=self.data_loc['INT_MENU_FILE'], 
+			menu=filemenu)
 
 		optmenu = tk.Menu(menubar, tearoff=0)
-		optmenu.add_command(label="Plots Enabled", command=None)
-		optmenu.add_command(label="Console Output", command=None)
-		optmenu.add_command(label="Help", command=None)
-		menubar.add_cascade(label='Options', menu=optmenu)
+		optmenu.add_command(label=self.data_loc['INT_MENU_PLOTS'], 
+			command=self.c_action_enable_disable_plots)
+		optmenu.add_command(label=self.data_loc['INT_MENU_CON'], 
+			command=self.c_action_console_output_type)
+		optmenu.add_command(label=self.data_loc['INT_MENU_HELP'], 
+			command=self.c_action_help)
+		menubar.add_cascade(label=self.data_loc['INT_MENU_OPTIONS'], 
+			menu=optmenu)
 
 		self.root.config(menu=menubar)
 
@@ -252,12 +265,28 @@ class Interface:
 			self.w_list_detectors.insert(cursor, s[0])
 			cursor += 1
 
+	def c_action_help(self):
+		print(self.data_loc['INT_MSG_HELP'])
+
 	def c_action_enable_disable_plots(self):
 		if self.plot_enable:
 			self.plot_enable = False
 		else:
 			if PLOT_ENABLE:
 				self.plot_enable = True
+		text = self.data_loc['INT_MSG_PLOT_OUTPUT_CHG']
+		print(text.format(self.plot_enable))
+
+	def c_action_console_output_type(self):
+		flag = self.gflags.LOADER.parser['INTERFACE']['console_output_type']
+		avaiable_flags = ('NONE', 'PARTIAL', 'FULL', 'NONE')
+		for i, f in enumerate(avaiable_flags):
+			if f==flag:
+				self.gflags.LOADER.parser['INTERFACE']['console_output_type'] \
+					= avaiable_flags[i+1]
+				text = self.data_loc['INT_MSG_CON_OUTPUT_CHG']
+				print(text.format(avaiable_flags[i+1]))
+				return
 
 	def c_action_exit(self):
 		self.root.destroy()
@@ -394,12 +423,14 @@ class Interface:
 			fl = dlg.show()
 		else:
 			fl = filepath
-		if fl!='':
+		if fl:
 			detectors, sources = self.load_save(fl)
 			self.detectors = [ self.__create_detector(*d) for d in detectors ]
 			self.sources = [ self.__create_source(*s) for s in sources ]
 			self.__find_detector = partial(self.__find, self.detectors)
 			self.__find_source = partial(self.__find, self.sources)
+		else:
+			return
 
 	def c_action_simulate(self, event):
 		self.gflags.BUF_DETECTORS = self.detectors

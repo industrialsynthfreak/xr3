@@ -47,11 +47,11 @@ Press simulate.
 
 ### Experiment options
 
-- Exposition time
-- Number of ADC channels
+- Exposition time sec
+- Number of ADC channels (for the sake of realism should be like: 64, 128, 256, 512)
 - Detector energy resolution (sadly you should set it by yourself)
 - ADC CFD threshold in MeV
-- ADC max energy/ max signal in MeV
+- ADC max energy/ max signal in MeV (most isotopes have the highest quantum energy less than 2MeV)
 
 ### What you can get
 
@@ -75,7 +75,7 @@ Press simulate.
 
 ## ToDo list
 
-- User-friendly app settings
+- User-friendly app settings (partially done)
 - Python2.7 support
 - Experiment options saves
 - Console (no-gui) interface

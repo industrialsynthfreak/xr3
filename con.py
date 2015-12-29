@@ -5,9 +5,8 @@ class Console:
 	def __init__(self, gflags, interface):
 		self.gflags = gflags
 		self.interface = interface
-		self.show = gflags.LOADER.parser['INTERFACE']['console_output_type']
 		self.data_loc = gflags.LOADER.parser['LOC']
-
+		
 	def run(self):
 		while self.gflags.FLG_RUN:
 			if self.gflags.FLG_SIMULATE:
@@ -30,11 +29,13 @@ class Console:
 	def console_output(self, data):
 
 		def __line_add(line):
-			if self.show!='NONE':
+			if self.gflags.LOADER.parser['INTERFACE']['console_output_type']\
+				!='NONE':
 				print(line)
 
 		def __line_if_full(line):
-			if self.show=='FULL':
+			if self.gflags.LOADER.parser['INTERFACE']['console_output_type']\
+				=='FULL':
 				print(line)
 
 		def __det_print(args):
