@@ -6,7 +6,7 @@ from userinput import UserInput
 from interface import Interface
 from global_flags import GFLAGS
 
-if __name__=="__main__":
+if __name__ == "__main__":
 	if GFLAGS.FLG_TKINTER:
 		INTERFACE = Interface(GFLAGS)
 	else:

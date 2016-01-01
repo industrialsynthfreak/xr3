@@ -1,5 +1,6 @@
 from loader import Loader
 
+
 class GlobalFlags:
 	def __init__(self):
 		self.reload_buffer()

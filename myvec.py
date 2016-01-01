@@ -1,5 +1,5 @@
 class V3:
-	
+
 	def __init__(self, x, y, z):
 		self.x, self.y, self.z = float(x), float(y), float(z)
 
@@ -9,7 +9,7 @@ class V3:
 	def __dec_arithm_error_handling(f):
 
 		def wrapper(self, other):
-			if type(other)!=V3:
+			if type(other) != V3:
 				raise TypeError
 			else:
 				return f(self, other)
@@ -26,4 +26,4 @@ class V3:
 	@__dec_arithm_error_handling
 	def __pow__(self, other):
 		_dv = self.__sub__(other)
-		return ( _dv.x**2 + _dv.y**2 + _dv.z**2 )**.5
+		return (_dv.x**2 + _dv.y**2 + _dv.z**2)**.5

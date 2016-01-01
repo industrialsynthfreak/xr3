@@ -3,6 +3,7 @@ from loader import Loader
 from myarr import TList
 from myvec import V3
 
+
 class ConstructDetector:
 
 	def __init__(self):
@@ -16,9 +17,9 @@ class ConstructDetector:
 			pos = V3(*pos)
 		except Exception:
 			return None
-		if type(mat)!=Material or type(mat_cover)!=Material:
+		if type(mat) != Material or type(mat_cover) != Material:
 			return None
-		if q<=0 or d<=0:
+		if q <= 0 or d <= 0:
 			return None
 		DET = Detector(name, pos, q, d, mat, d_cover, mat_cover)
 		return DET
@@ -39,7 +40,7 @@ class ConstructSource:
 				m = float(m)
 		except Exception as err:
 			return None
-		if type(mat_cover)!=Material or type(isotope)!=Isotope:
+		if type(mat_cover) != Material or type(isotope) != Isotope:
 			return None
 		SOURCE = Source(name, isotope, pos, m, d_cover, mat_cover, activity)
 		return SOURCE
@@ -58,7 +59,7 @@ class ConstructScene:
 			sources = TList(Source, sources)
 		except Exception:
 			return None
-		if type(medium)!=Material:
+		if type(medium) != Material:
 			return None
 		SCENE = Scene(detectors, sources, medium, t, bkg)
 		return SCENE
