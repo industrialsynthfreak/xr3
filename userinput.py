@@ -115,11 +115,9 @@ class UserInput:
 			_s = self.data_loc['NOGUI_STR_LS_D']
 			for i, d in enumerate(self.detectors):
 				name, pos, q, d, mat, d_cover, mat_cover = d
-				mat = mat.name
-				mat_cover = mat_cover.name
 				_pos, _q, _d, _d_cover = self.scale_det
 				print(_s.format(
-					i, mat, d / _d, d_cover / _d_cover, mat_cover,
+					i, mat.name, d / _d, d_cover / _d_cover, mat_cover.name,
 					q / _q, pos[2] / _pos))
 
 		def __list_s():
@@ -133,14 +131,13 @@ class UserInput:
 				else:
 					units = 'ng'
 					m = m / _m
-				isotope = isotope.name
-				mat_cover = mat_cover.name
 				print(_s.format(
-					i, isotope, m, units, d_cover / _d_cover, mat_cover,
-					pos[2] / _pos))
+					i, isotope.name, m, units, d_cover / _d_cover,
+					mat_cover.name, pos[2] / _pos))
 
 		def __list_other():
-			print(self.medium)
+			_s = self.data_loc['NOGUI_STR_MEDIUM_SET']
+			print(_s.format(self.medium))
 
 		if args[0] == 'd':
 			__list_d()
@@ -155,8 +152,7 @@ class UserInput:
 		args = (args[:-1] + ('*',) * 6)[:6]
 		mat, q, d, d_cover, mat_cover, pos = args
 		values = [pos, q, d, d_cover]
-		scales = self.scale_det
-		for i, (v, s) in enumerate(zip(values, scales)):
+		for i, (v, s) in enumerate(zip(values, self.scale_det)):
 			if v == '*':
 				v = self.def_values_det[i]
 			else:
@@ -167,8 +163,7 @@ class UserInput:
 					return
 			values[i] = v * s
 		pos, q, d, d_cover = values
-		pos = [0, 0, pos]
-		if mat and mat.capitalize() in self.data.names_scintillators():
+		if mat and mat in self.data.names_scintillators():
 			mat = self.data.find_scintillator(mat)
 		else:
 			mat = self.data.scintillators[0]
@@ -177,15 +172,14 @@ class UserInput:
 		else:
 			mat_cover = self.data.materials[0]
 		name = mat.name
-		d = [name, pos, q, d, mat, d_cover, mat_cover]
+		d = [name, [0, 0, pos], q, d, mat, d_cover, mat_cover]
 		self.detectors.append(d)
 
 	def c_add_source(self, *args):
 		args = (args[:-1] + ('*',) * 6)[:6]
 		isotope, m, d_cover, mat_cover, pos, activity = args
 		values = [m, d_cover, pos, activity]
-		scales = self.scale_source
-		for i, (v, s) in enumerate(zip(values, scales)):
+		for i, (v, s) in enumerate(zip(values, self.scale_source)):
 			if v == '*':
 				v = self.def_values_source[i]
 			else:
@@ -199,10 +193,9 @@ class UserInput:
 			else:
 				values[i] = v
 		m, d_cover, pos, activity = values
-		pos = [0, 0, pos]
 		if activity is not None:
 			m = None
-		if isotope and isotope.capitalize() in self.data.names_isotopes():
+		if isotope and isotope in self.data.names_isotopes():
 			isotope = self.data.find_isotope(isotope)
 		else:
 			isotope = self.data.isotopes[0]
@@ -211,7 +204,7 @@ class UserInput:
 		else:
 			mat_cover = self.data.materials[0]
 		name = isotope.name
-		s = [name, isotope, m, d_cover, mat_cover, pos, activity]
+		s = [name, isotope, m, d_cover, mat_cover, [0, 0, pos], activity]
 		self.sources.append(s)
 
 	def c_set_medium(self, *args):
