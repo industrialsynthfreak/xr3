@@ -15,7 +15,8 @@ class ConstructDetector:
 			d = float(d)
 			d_cover = float(d_cover)
 			pos = V3(*pos)
-		except Exception:
+		except Exception as err:
+			print(err)
 			return None
 		if type(mat) != Material or type(mat_cover) != Material:
 			return None

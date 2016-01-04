@@ -6,8 +6,8 @@ from functools import partial
 class UserInput:
 
 	def __init__(self, gflags):
-		self.scale_source = []
-		self.scale_det = []
+		self.scale_source = [10**-9, 1, 100, 10**6]
+		self.scale_det = [100, 1, 1, 1]
 		self.def_values_source = [1, 0.1, 0, None]
 		self.def_values_det = [1, 100, 1, 0.1]
 		self.gflags = gflags
@@ -16,7 +16,7 @@ class UserInput:
 		self.regexp = re.compile('\S+')
 		self.detectors = []
 		self.sources = []
-		self.medium = None
+		self.medium = 'DRY_AIR'
 		self.c_isotope_table = partial(
 			self.__namespace_search,
 			self.data.names_isotopes()
@@ -75,6 +75,10 @@ class UserInput:
 				self.c_list,
 				self.data_loc['NOGUI_STR_LS']
 			),
+			'sim' : (
+				self.c_simulate,
+				self.data_loc['NOGUI_STR_SIM']
+			),
 		}
 
 	def __namespace_search(self, db, *args):
@@ -113,22 +117,27 @@ class UserInput:
 				name, pos, q, d, mat, d_cover, mat_cover = d
 				mat = mat.name
 				mat_cover = mat_cover.name
+				_pos, _q, _d, _d_cover = self.scale_det
 				print(_s.format(
-					i, mat, d, d_cover, mat_cover, q, pos))
+					i, mat, d / _d, d_cover / _d_cover, mat_cover,
+					q / _q, pos[2] / _pos))
 
 		def __list_s():
 			_s = self.data_loc['NOGUI_STR_LS_S']
 			for i, s in enumerate(self.sources):
 				name, isotope, m, d_cover, mat_cover, pos, activity = s
+				_m, _d_cover, _pos, _activity = self.scale_source
 				if activity:
 					units = 'Mbk'
-					m = activity
+					m = activity / _activity
 				else:
 					units = 'ng'
+					m = m / _m
 				isotope = isotope.name
 				mat_cover = mat_cover.name
 				print(_s.format(
-					i, isotope, m, units, d_cover, mat_cover, pos))
+					i, isotope, m, units, d_cover / _d_cover, mat_cover,
+					pos[2] / _pos))
 
 		def __list_other():
 			print(self.medium)
@@ -146,16 +155,19 @@ class UserInput:
 		args = (args[:-1] + ('*',) * 6)[:6]
 		mat, q, d, d_cover, mat_cover, pos = args
 		values = [pos, q, d, d_cover]
-		for i, v in enumerate(values):
+		scales = self.scale_det
+		for i, (v, s) in enumerate(zip(values, scales)):
 			if v == '*':
-				values[i] = self.def_values_det[i]
+				v = self.def_values_det[i]
 			else:
 				try:
-					values[i] = float(v)
+					v = float(v)
 				except:
 					print(self.data_loc['NOGUI_STR_INVALID_INPUT'].format(v))
 					return
+			values[i] = v * s
 		pos, q, d, d_cover = values
+		pos = [0, 0, pos]
 		if mat and mat.capitalize() in self.data.names_scintillators():
 			mat = self.data.find_scintillator(mat)
 		else:
@@ -164,7 +176,7 @@ class UserInput:
 			mat_cover = self.data.find_material(mat_cover)
 		else:
 			mat_cover = self.data.materials[0]
-		name = ''
+		name = mat.name
 		d = [name, pos, q, d, mat, d_cover, mat_cover]
 		self.detectors.append(d)
 
@@ -172,16 +184,22 @@ class UserInput:
 		args = (args[:-1] + ('*',) * 6)[:6]
 		isotope, m, d_cover, mat_cover, pos, activity = args
 		values = [m, d_cover, pos, activity]
-		for i, v in enumerate(values):
+		scales = self.scale_source
+		for i, (v, s) in enumerate(zip(values, scales)):
 			if v == '*':
-				values[i] = self.def_values_source[i]
+				v = self.def_values_source[i]
 			else:
 				try:
-					values[i] = float(v)
+					v = float(v)
 				except:
 					print(self.data_loc['NOGUI_STR_INVALID_INPUT'].format(v))
 					return
+			if v:
+				values[i] = v * s
+			else:
+				values[i] = v
 		m, d_cover, pos, activity = values
+		pos = [0, 0, pos]
 		if activity is not None:
 			m = None
 		if isotope and isotope.capitalize() in self.data.names_isotopes():
@@ -192,7 +210,7 @@ class UserInput:
 			mat_cover = self.data.find_material(mat_cover)
 		else:
 			mat_cover = self.data.materials[0]
-		name = ''
+		name = isotope.name
 		s = [name, isotope, m, d_cover, mat_cover, pos, activity]
 		self.sources.append(s)
 
@@ -203,6 +221,19 @@ class UserInput:
 			print(self.data_loc['NOGUI_STR_MEDIUM_SET'].format(name))
 		else:
 			print(self.data_loc['NOGUI_STR_NO_MEDIUM'])
+
+	def c_simulate(self, *args):
+		exp = 300
+		if args[0]:
+			try:
+				exp = float(args[0])
+			except:
+				pass
+		self.gflags.BUF_DETECTORS = self.detectors
+		self.gflags.BUF_SOURCES = self.sources
+		self.gflags.BUF_EXPOSITION = exp
+		self.gflags.BUF_MEDIUM_TYPE = self.data.find_medium(self.medium)
+		self.gflags.FLG_SIMULATE = True
 
 	def __set_default_values(self, *args):
 		self.medium = self.data.names_media()[0]
