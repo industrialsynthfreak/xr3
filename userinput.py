@@ -75,9 +75,13 @@ class UserInput:
 				self.c_list,
 				self.data_loc['NOGUI_STR_LS']
 			),
-			'sim' : (
+			'sim': (
 				self.c_simulate,
 				self.data_loc['NOGUI_STR_SIM']
+			),
+			'rm': (
+				self.c_rm,
+				self.data_loc['NOGUI_STR_RM']
 			),
 		}
 
@@ -147,6 +151,22 @@ class UserInput:
 			__list_other()
 			__list_s()
 			__list_d()
+
+	def c_rm(self, *args):
+		args = (args + (None,) * 2)[:2]
+		print(args)
+		if args[0] == 'd':
+			data = self.detectors
+		elif args[0] == 's':
+			data = self.sources
+		else:
+			data = None
+		if args[1]:
+			try:
+				v = int(args[1])
+				del data[v]
+			except Exception as err:
+				print(self.data_loc['NOGUI_STR_INVALID_INPUT'].format(args[1]))
 
 	def c_add_detector(self, *args):
 		args = (args[:-1] + ('*',) * 6)[:6]

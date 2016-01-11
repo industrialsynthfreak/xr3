@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-__version__ = '1.0a1'
-
 from threading import Thread
 
 from con import Console
 from userinput import UserInput
 from interface import Interface
 from global_flags import GFLAGS
+
+__version__ = '1.0a2'
 
 if __name__ == "__main__":
 	if GFLAGS.FLG_TKINTER:

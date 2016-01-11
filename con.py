@@ -54,8 +54,9 @@ class Console:
 			for source in source_data:
 				name, true, eff, dec, yn_total, band_data = source
 				__line_add(
-					s_source.format(name, true, dec / 10**6, yn_total / 10**6,
-									G * yn_total / 10**6, eff * 100)
+					s_source.format(
+						name, true, dec / 10**6, yn_total / 10**6,
+						G * yn_total / 10**6, eff * 100)
 				)
 				for band in band_data:
 					e, p, N, E, G, I, M, Nph, Eph, Mph = band
@@ -64,7 +65,8 @@ class Console:
 					ycval.append(N - Nph)
 					sources_yc += (N - Nph)
 					__line_if_full(
-						s_line.format(e * 1000, p * 100, N, E * 100,
+						s_line.format(
+							e * 1000, p * 100, N, E * 100,
 							100 - I * 100, M * 100., Nph, Eph * 100.)
 					)
 				__line_add('\n')
