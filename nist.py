@@ -64,7 +64,7 @@ def parse_material_file(filedata):
 				k_ph = float(_l[2])
 			ATTENUATIONS.append((e, k, k_ph))
 		_v1 = (0, ATTENUATIONS[0][1], ATTENUATIONS[0][2])
-		_v2 = (float('inf'), ATTENUATIONS[-1][1], ATTENUATIONS[-1][2])
+		_v2 = (200000, 0, 0)
 		ATTENUATIONS = [_v1] + ATTENUATIONS + [_v2]
 		return NAME, float(DENSITY), ATTENUATIONS
 	except Exception as err:
